@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+:root {
+  --ig-orange: #f09433;
+  --ig-magenta: #bc1888;
+}
+
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+/** 제목용 세리프 (한글 가독) */
+.font-display {
+  font-family: ui-serif, "Apple SD Gothic Neo", "Noto Serif KR", Georgia, serif;
+}
+
+@keyframes story-soft-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.story-beat {
+  animation: story-soft-in 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
