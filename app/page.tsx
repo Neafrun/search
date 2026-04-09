@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState, type CSSProperties } from "react";
 import {
   assignMeAndThem,
@@ -315,6 +316,10 @@ export default function Home() {
         setAiHint(
           "분석 기능이 아직 설정되지 않았습니다. 관리자에게 문의하거나, 잠시 후 다시 시도해 주세요."
         );
+      } else if (data.reason === "quota") {
+        setAiHint(
+          "Google Gemini 무료 할당량이 부족하거나 한도가 0으로 보입니다. Google AI Studio 또는 Cloud 콘솔에서 사용량·결제·API 키 프로젝트를 확인하세요. 잠시 뒤 재시도하거나, 유료 플랜·다른 키가 필요할 수 있습니다."
+        );
       } else if (data.detail) {
         const d = data.detail;
         const short = d.length > 520 ? `${d.slice(0, 520)}…` : d;
@@ -325,7 +330,7 @@ export default function Home() {
             );
           setAiHint(
             isQuota
-              ? "요청 한도에 도달했습니다. 잠시 후 다시 시도하거나, 이용 환경의 할당량·요금제를 확인해 주세요."
+              ? "Google Gemini 요청 한도에 도달했습니다. Studio/Cloud에서 할당량·요금제를 확인하거나 잠시 후 다시 시도해 주세요."
               : /404|NOT_FOUND|is not found for API version/i.test(data.detail ?? "")
                 ? `분석 모델을 불러오지 못했습니다(404). 환경 설정의 모델 이름을 확인해 주세요. (${short.slice(0, 100)}…)`
                 : `연결 오류: ${short.slice(0, 380)} 터미널 로그·.env의 GEMINI_API_KEY·모델 이름을 확인해 주세요.`
@@ -395,22 +400,6 @@ export default function Home() {
       <div className="mx-auto flex max-w-2xl flex-col gap-8 sm:gap-10">
         <header className="text-center sm:text-left sm:max-w-none">
           <div className="mb-6 flex flex-col items-center sm:items-start sm:mb-8">
-            <div
-              className={`flex h-11 w-11 items-center justify-center rounded-lg border sm:h-12 sm:w-12 ${
-                isLanding || moodBright
-                  ? "border-slate-200 bg-white shadow-sm"
-                  : "border-zinc-600/80 bg-zinc-900/80 shadow-inner"
-              }`}
-              aria-hidden
-            >
-              <span
-                className={`font-display text-[15px] font-semibold tracking-tight ${
-                  isLanding || moodBright ? "text-slate-800" : "text-zinc-100"
-                }`}
-              >
-                Y·M
-              </span>
-            </div>
             <p
               className={`mt-4 text-[11px] font-semibold uppercase tracking-[0.18em] ${inkMuted}`}
             >
@@ -1138,6 +1127,32 @@ export default function Home() {
             본 서비스는 붙여 넣은 텍스트만 처리합니다. 발화자 구분은 형식에 따라 달라질 수
             있으며, 결과는 참고용이며 의료·법적 효력이 없습니다.
           </p>
+          <div
+            className={`flex flex-wrap justify-center gap-x-4 gap-y-1 ${
+              isLanding || moodBright ? "" : "text-white/70"
+            }`}
+          >
+            <Link
+              href="/privacy"
+              className={
+                isLanding || moodBright
+                  ? "underline decoration-slate-300 hover:text-slate-800"
+                  : "underline decoration-white/35 hover:text-white"
+              }
+            >
+              개인정보처리방침
+            </Link>
+            <Link
+              href="/terms"
+              className={
+                isLanding || moodBright
+                  ? "underline decoration-slate-300 hover:text-slate-800"
+                  : "underline decoration-white/35 hover:text-white"
+              }
+            >
+              이용안내
+            </Link>
+          </div>
           {siteLocked && (
             <button
               type="button"

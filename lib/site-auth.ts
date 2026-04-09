@@ -23,8 +23,11 @@ export function getCookieName(): string {
   return COOKIE_NAME;
 }
 
+/** AUTH_SECRET이 빈 문자열이면 ?? 로는 SITE_PASSWORD로 넘어가지 않아 쿠키 서명이 깨집니다. */
 function signingSecret(): string {
-  return process.env.AUTH_SECRET ?? process.env.SITE_PASSWORD ?? "";
+  const auth = process.env.AUTH_SECRET?.trim();
+  if (auth) return auth;
+  return process.env.SITE_PASSWORD?.trim() ?? "";
 }
 
 export async function makeSessionToken(): Promise<string> {

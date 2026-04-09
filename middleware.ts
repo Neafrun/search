@@ -11,6 +11,8 @@ export async function middleware(request: NextRequest) {
 
   if (
     pathname === "/login" ||
+    pathname === "/privacy" ||
+    pathname === "/terms" ||
     pathname === "/api/auth/site-login" ||
     pathname === "/api/auth/site-logout" ||
     pathname === "/api/auth/status"

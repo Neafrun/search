@@ -35,6 +35,10 @@ GEMINI_API_KEY=여기에_붙여넣기
 
 키를 바꾼 뒤에는 `npm run dev`를 **다시 실행**해야 합니다.
 
+## Vercel 배포
+
+저장소를 Vercel에 연결한 뒤, 대시보드 **Environment Variables**에 `GEMINI_API_KEY`, `NEXT_PUBLIC_SITE_URL`(프로덕션 `https://…` URL) 등을 넣고 배포합니다. 자세한 단계는 **`DEPLOY.md`** 를 참고하세요.
+
 ## 참고
 
 - 진단·채용·법적 판단에 사용할 수 없습니다.

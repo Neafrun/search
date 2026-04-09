@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { loadAiAnalysisRules } from "@/lib/load-ai-analysis-rules";
-import { completeAnalysisJson } from "@/lib/call-ai-json";
+import { completeAnalysisJson, isGeminiQuotaDetail } from "@/lib/call-ai-json";
 import { parseLooseJsonObject } from "@/lib/parse-loose-json";
 
 export const runtime = "nodejs";
@@ -178,6 +178,14 @@ ${JSON_INSTRUCTION}`;
     }
     if (process.env.NODE_ENV === "development") {
       console.error("[analyze-chat-ai] upstream:", started.detail);
+    }
+    /** HTTP 429는 브라우저 콘솔에 네트워크 오류로 빨갛게 찍힘. 할당량은 예상 가능한 실패이므로 200 + ok:false 로 전달 */
+    if (started.reason === "upstream" && isGeminiQuotaDetail(started.detail)) {
+      return NextResponse.json({
+        ok: false as const,
+        reason: "quota" as const,
+        detail: started.detail,
+      });
     }
     return NextResponse.json(
       {

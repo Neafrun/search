@@ -173,6 +173,15 @@ function isGeminiQuotaOrRateLimit(e: unknown): boolean {
   );
 }
 
+/** API 라우트·UI에서 무료 한도 초과(429)와 일반 오류를 구분할 때 사용 */
+export function isGeminiQuotaDetail(detail: string): boolean {
+  return (
+    /429|quota|RESOURCE_EXHAUSTED|exceeded your current quota|free_tier|generate_content_free_tier/i.test(
+      detail
+    ) || /limit:\s*0/i.test(detail)
+  );
+}
+
 async function geminiGenerate(
   apiKey: string,
   preferredModel: string,
